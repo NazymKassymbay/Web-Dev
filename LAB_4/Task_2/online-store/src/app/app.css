@@ -1,0 +1,46 @@
+main {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+.categories {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.categories button {
+  padding: 10px 20px;
+  border: 2px solid #007bff;
+  background-color: white;
+  color: #007bff;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.categories button:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.categories button.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.welcome {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  font-size: 18px;
+}

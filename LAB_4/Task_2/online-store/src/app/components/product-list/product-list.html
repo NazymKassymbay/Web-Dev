@@ -1,0 +1,14 @@
+<div class="product-list">
+  @if (products().length === 0) {
+    <div class="empty-message">
+      No products in this category
+    </div>
+  } @else {
+    @for (product of products(); track product.id) {
+      <app-product-card 
+        [product]="product"
+        (delete)="onDelete($event)">
+      </app-product-card>
+    }
+  }
+</div>
