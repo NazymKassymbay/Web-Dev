@@ -4,37 +4,61 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AlbumsService } from '../albums.service';
 import { FormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-albums',
-  imports: [CommonModule , RouterModule, FormsModule],
+  standalone: true,
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './albums.component.html',
   styleUrl: './albums.component.css'
 })
-export class AlbumsComponent implements OnInit{
-  albums !: Album[];
-  loaded : boolean = false ; 
+export class AlbumsComponent implements OnInit {
 
-  constructor(private albumsService : AlbumsService) {
-    //this.albums = ALBUMS; 
-  }
-  ngOnInit(){
-    this.loaded = false ; 
-    this.loadAlbums(); 
+  albums!: Album[];
+  loaded: boolean = false;
+
+  constructor(private albumsService: AlbumsService) {}
+
+  ngOnInit() {
+    this.loadAlbums();
   }
 
-  loadAlbums(){
-    this.albumsService.getAlbums().subscribe((albums : Album[]) =>{
-      this.albums = albums ;
-      this.loaded = true; 
-    })
+  loadAlbums() {
+    this.loaded = false;
+
+    this.albumsService.getAlbums().subscribe((albums: Album[]) => {
+
+      // APPLY SAVED TITLES FROM LOCAL STORAGE
+      this.albums = albums.map(album => {
+        const savedTitle = localStorage.getItem(`album-${album.id}`);
+
+        if (savedTitle) {
+          return {
+            ...album,
+            title: savedTitle
+          };
+        }
+
+        return album;
+      });
+
+      this.loaded = true;
+    });
   }
-  deleteAlbum(id : number , event : Event){
-    event.stopPropagation(); 
+
+  deleteAlbum(id: number, event: Event) {
+    event.stopPropagation();
 
     this.albumsService.deleteAlbum(id).subscribe({
-      next : () => {
-        this.albums = this.albums.filter(album => album.id !== id); 
+      next: () => {
+
+        this.albums = this.albums.filter(album => album.id !== id);
+
+        // also delete from local storage
+        localStorage.removeItem(`album-${id}`);
+
       }
-    })
+    });
   }
+
 }

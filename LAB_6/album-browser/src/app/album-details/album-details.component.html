@@ -1,26 +1,34 @@
-<a [routerLink]="['/albums']">Return</a>
-<div *ngIf="loaded; else loadingBlock">
-    <h3>Post #{{album.id}}</h3>
-    
-    <div *ngIf="!isEditing ; else editBlock">
-        <h4>{{album.title}}</h4>
-        <button (click)="toggleEdit()">Edit Title</button>
-    </div>
+<div *ngIf="loaded">
 
-    <ng-template #editBlock>
-        <div>
-            <input [(ngModel)]="editTitle" placeholder="Album title"/>
-            <button (click)="saveTitle()">Save</button>
-            <button (click)="toggleEdit()">Cancel</button>
-        </div>
-    </ng-template>    
+  <h2>Album #{{album.id}}</h2>
+
+  <p><strong>User ID:</strong> {{album.userId}}</p>
+  
+
+  <div *ngIf="!isEditing">
+    <h3>{{album.title}}</h3>
+    <button (click)="toggleEdit()">Edit</button>
+  </div>
+
+  <div *ngIf="isEditing">
+    <input [(ngModel)]="editTitle">
+    <button (click)="saveTitle()">Save</button>
+  </div>
+
+  <br>
+
+  <a [routerLink]="['/albums', album.id, 'photos']">
+    View Photos
+  </a>
+
+  <br><br>
+
+  <a routerLink="/albums">
+    Back to Albums
+  </a>
+
 </div>
-<div>
-    <a [routerLink]="['/albums', album.id, 'photos']">Photos</a>
-</div>
-<br>
-<div>
-    <ng-template #loadingBlock>
-        Post detail is loading...
-    </ng-template>
+
+<div *ngIf="!loaded">
+  Loading album...
 </div>
